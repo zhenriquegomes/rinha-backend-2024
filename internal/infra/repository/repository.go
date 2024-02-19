@@ -53,3 +53,20 @@ func (c *ClientRepository) ConsultarCliente(id int) (*entity.Cliente, error) {
 	}	
 	return &cliente, nil
 }
+
+func (c *ClientRepository) AtualizarSaldo(novo_saldo, cliente_id int) error {
+	stmt, err := c.db.Prepare(`
+		UPDATE public.clientes
+		SET saldo_atual = $1
+		WHERE id = $2
+	`)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(novo_saldo, cliente_id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
