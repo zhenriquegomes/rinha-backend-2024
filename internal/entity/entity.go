@@ -14,3 +14,10 @@ type TransactionResponse struct {
 	Limite int `json:"limite"`
 	Saldo int `json:"saldo"`
 }
+
+type Cliente struct {
+	ID int `json:"id"`
+	Limite int `json:"limite"`
+	SaldoInicial int `json:"saldo_inicial"`
+	SaldoAtual int `json:"saldo_atual"`
+}

@@ -37,3 +37,19 @@ func (c *ClientRepository) RealizarTransacao(transaction *entity.Transaction) er
 	}
 	return nil
 }
+
+func (c *ClientRepository) ConsultarCliente(id int) (*entity.Cliente, error) {
+	stmt, err := c.db.Prepare(`
+		SELECT id, limite, saldo_inicial, saldo_atual FROM public.clientes WHERE id = $1
+	`)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	var cliente entity.Cliente
+	err = stmt.QueryRow(id).Scan(&cliente.ID, &cliente.Limite, &cliente.SaldoInicial, &cliente.SaldoAtual)
+	if err != nil {
+		return nil, err
+	}	
+	return &cliente, nil
+}
