@@ -18,8 +18,9 @@ func main() {
 	defer db.Close()
 	clientRepository := repository.NewClientRepository(db)
 	clientRouter := routes.NewClientRouter(clientRepository)
-	http.HandleFunc("POST /clientes/{id}/transacoes", clientRouter.RealizarTransacao)
+	mux := http.NewServeMux()
+	mux.HandleFunc("POST /clientes/{id}/transacoes", clientRouter.RealizarTransacao)
 	log.Println("Starting server on: http://localhost:8080")
-	log.Fatal(http.ListenAndServe("localhost:8080", nil))
+	log.Fatal(http.ListenAndServe("localhost:8080", mux))
 }
 
